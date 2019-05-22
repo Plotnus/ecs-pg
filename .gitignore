@@ -1,0 +1,9 @@
+/target
+**/*.rs.bk
+Cargo.lock
+
+
+# so we dont add sdl2 stuff to windows
+/msvc
+/gnu-mingw
+/*.dll
