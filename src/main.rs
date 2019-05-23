@@ -52,39 +52,36 @@ fn main() -> Result<(), String> {
 
     let mut game_state = GameState::new();
 
+    let mut input_state = InputState::new();
     loop {
-        let mut input_state = InputState::new();
         for event in sdl_context.event_pump().unwrap().poll_iter() {
             use sdl2::controller::Axis;
             use sdl2::event::Event;
             if let Event::ControllerAxisMotion {
-                axis, value: val, ..
+                axis,
+                value: raw_val,
+                ..
             } = event
             {
-                let dead_zone = 10_000;
-                if val >= -dead_zone && val <= dead_zone {
-                    continue;
-                }
-                let normalized = if val < 0 {
-                    println!("{}", val);
-                    println!("{}", i16::min_value());
-                    -(val as f32 / i16::min_value() as f32)
+                // linear mapping of raw_val to the range [-1,1]
+                let t = if raw_val >= 0 {
+                    (raw_val as f32 / std::i16::MAX as f32)
                 } else {
-                    val as f32 / i16::max_value() as f32
+                    -(raw_val as f32 / std::i16::MIN as f32)
                 };
 
-                match axis {
-                    Axis::LeftX => input_state.ls.x = normalized,
-                    Axis::LeftY => input_state.ls.y = normalized,
-                    Axis::RightX => input_state.rs.x = normalized,
-                    Axis::RightY => input_state.rs.y = normalized,
-                    Axis::TriggerRight => (),
-                    Axis::TriggerLeft => (),
+                println!("val: {}, n: {}", raw_val, t);
+                if axis == Axis::LeftX {
+                    input_state.ls.x = t;
+                } else if axis == Axis::LeftY {
+                    input_state.ls.y = t;
+                } else if axis == Axis::RightX {
+                    input_state.rs.x = t;
+                } else if axis == Axis::RightY {
+                    input_state.rs.y = t;
                 }
             }
         }
-        input_state.ls.normalize();
-        input_state.rs.normalize();
         println!("input: {:?}", input_state);
         //let input_state = capture_input_state();
 
