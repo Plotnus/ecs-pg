@@ -66,7 +66,9 @@ fn main() -> Result<(), String> {
                     continue;
                 }
                 let normalized = if val < 0 {
-                    -val as f32 / i16::min_value() as f32
+                    println!("{}", val);
+                    println!("{}", i16::min_value());
+                    -(val as f32 / i16::min_value() as f32)
                 } else {
                     val as f32 / i16::max_value() as f32
                 };
