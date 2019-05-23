@@ -1,8 +1,9 @@
 use crate::math::Vec2;
+#[derive(Debug)]
 pub struct InputState {
     // thumb-sticks
-    ls: Vec2,
-    rs: Vec2,
+    pub ls: Vec2,
+    pub rs: Vec2,
     /* ... etc ... */
 }
 
