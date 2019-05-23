@@ -71,14 +71,15 @@ fn main() -> Result<(), String> {
                 };
 
                 println!("val: {}, n: {}", raw_val, t);
+                // we flip `t` along the y axis so up is +1
                 if axis == Axis::LeftX {
                     input_state.ls.x = t;
                 } else if axis == Axis::LeftY {
-                    input_state.ls.y = t;
+                    input_state.ls.y = -t;
                 } else if axis == Axis::RightX {
                     input_state.rs.x = t;
                 } else if axis == Axis::RightY {
-                    input_state.rs.y = t;
+                    input_state.rs.y = -t;
                 }
             }
         }
