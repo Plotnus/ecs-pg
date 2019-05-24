@@ -16,10 +16,35 @@ pub struct Vec2 {
     pub y: f32,
 }
 impl Vec2 {
+    pub fn new(x: f32, y: f32) -> Vec2 {
+        Vec2 { x, y }
+    }
+    pub fn zero() -> Vec2 {
+        Vec2::new(0.0, 0.0)
+    }
+
     pub fn normalize(&mut self) {
-        let s = self.magnitude();
+        let s = 1.0 / self.magnitude();
         self.x *= s;
         self.y *= s;
+    }
+    pub fn normalized(&self) -> Vec2 {
+        let s = 1.0 / self.magnitude();
+        Vec2 {
+            x: self.x * s,
+            y: self.y * s,
+        }
+    }
+
+    pub fn scale(&mut self, s: f32) {
+        self.x *= s;
+        self.y *= s;
+    }
+    pub fn scaled(&self, s: f32) -> Vec2 {
+        Vec2 {
+            x: self.x * s,
+            y: self.y * s,
+        }
     }
 
     pub fn magnitude(&self) -> f32 {

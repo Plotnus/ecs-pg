@@ -1,3 +1,4 @@
+#![feature(clamp)]
 extern crate sdl2;
 
 mod enemy_state;
@@ -10,6 +11,9 @@ mod tile;
 
 use crate::game_state::GameState;
 use crate::input_state::InputState;
+
+// used for input
+use math::Vec2;
 
 fn main() -> Result<(), String> {
     println!("Hello, world!");
@@ -70,17 +74,36 @@ fn main() -> Result<(), String> {
                     -(raw_val as f32 / std::i16::MIN as f32)
                 };
 
-                println!("val: {}, n: {}", raw_val, t);
-                // we flip `t` along the y axis so up is +1
+                // assign t
                 if axis == Axis::LeftX {
                     input_state.ls.x = t;
                 } else if axis == Axis::LeftY {
-                    input_state.ls.y = -t;
+                    input_state.ls.y = t;
                 } else if axis == Axis::RightX {
                     input_state.rs.x = t;
                 } else if axis == Axis::RightY {
-                    input_state.rs.y = -t;
+                    input_state.rs.y = t;
                 }
+
+                // flip y value so up is (+) and down is (-)
+                if axis == Axis::LeftY {
+                    input_state.ls.y = -input_state.ls.y;
+                } else if axis == Axis::RightY {
+                    input_state.rs.y = -input_state.rs.y;
+                }
+
+                // create mapping for magnitude
+                let mag = input_state.ls.magnitude();
+                let mag = mag.clamp(0.0, 1.0);
+                let dir = if mag != 0.0 {
+                    input_state.ls.normalized()
+                } else {
+                    Vec2::zero()
+                };
+                input_state.ls = dir.scaled(mag);
+                println!("mag: {}, dir: {:?}", mag, dir)
+
+                // apply magnitude to direction
             }
         }
         println!("input: {:?}", input_state);
@@ -99,9 +122,8 @@ fn main() -> Result<(), String> {
         audio_system(&game_state);
 
         // wait for next frame
-        let sleep_dur = std::time::Duration::from_millis(500);
+        let sleep_dur = std::time::Duration::from_millis(2000);
         std::thread::sleep(sleep_dur);
-        println!("end_frame");
     }
     Ok(())
 }
