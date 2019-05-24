@@ -92,7 +92,7 @@ fn main() -> Result<(), String> {
                     input_state.rs.y = -input_state.rs.y;
                 }
 
-                // create mapping for magnitude
+                // calculate magnitude and direction for input
                 let mag = input_state.ls.magnitude();
                 let mag = mag.clamp(0.0, 1.0);
                 let dir = if mag != 0.0 {
@@ -100,10 +100,25 @@ fn main() -> Result<(), String> {
                 } else {
                     Vec2::zero()
                 };
-                input_state.ls = dir.scaled(mag);
-                println!("mag: {}, dir: {:?}", mag, dir)
+
+                // map magnitude to account for dead zones
+                // this step is really a game design step
+                // for our purposes this will mostly be 0 or 1
+                // to have that max snappy feeling of twin stick...
+                // this may be bad depending on if players want the ability
+                // to have finer control over the character
+                let f = |x: f32| -> f32 {
+                    if x < 0.2 {
+                        // inner dead zone
+                        0.0
+                    } else {
+                        // outer deadzone is anything <= 0.2
+                        1.0
+                    }
+                };
 
                 // apply magnitude to direction
+                input_state.ls = dir.scaled(f(mag));
             }
         }
         println!("input: {:?}", input_state);
