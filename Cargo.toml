@@ -1,16 +1,10 @@
 [package]
-name = "twins-pg"
+name = "ecs-pg"
 version = "0.1.0"
 authors = ["Jonathan Plotner <plotnus@gmail.com>"]
 edition = "2018"
-#build = "build.rs"
 
 [dependencies]
 sdl2 = "0.32"
 
 
-#[dependencies.sdl2]
-#git = "https://github.com/AngryLawyer/rust-sdl2"
-#version = "0.32.2"
-#default-features = true
-##features = ["tff", "image", "gfx", "mixer"]
