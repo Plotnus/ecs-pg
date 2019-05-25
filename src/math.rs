@@ -4,12 +4,42 @@ pub struct Point {
     pub y: f32,
     pub z: f32,
 }
+impl Point {
+    pub fn new(x: f32, y: f32, z: f32) -> Point {
+        Point { x, y, z }
+    }
+    pub fn zero() -> Point {
+        Point::new(0.0, 0.0, 0.0)
+    }
+}
 #[derive(Copy, Clone)]
-pub struct Vector {
+pub struct Vec3 {
     pub x: f32,
     pub y: f32,
     pub z: f32,
 }
+impl Vec3 {
+    pub fn new(x: f32, y: f32, z: f32) -> Vec3 {
+        Vec3 { x, y, z }
+    }
+    pub fn zero() -> Vec3 {
+        Vec3::new(0.0, 0.0, 0.0)
+    }
+
+    /// unit vector in the direction of the x-axis
+    pub fn i_hat() -> Vec3 {
+        Vec3::new(1.0, 0.0, 0.0)
+    }
+    /// unit vector in the direction of the y-axis
+    pub fn j_hat() -> Vec3 {
+        Vec3::new(0.0, 1.0, 0.0)
+    }
+    /// unit vector in the direction of the z-axis
+    pub fn k_hat() -> Vec3 {
+        Vec3::new(0.0, 0.0, 1.0)
+    }
+}
+
 #[derive(Copy, Clone, Debug)]
 pub struct Vec2 {
     pub x: f32,
@@ -62,5 +92,5 @@ impl Vec2 {
 #[derive(Copy, Clone)]
 pub struct AABB {
     center: Point,
-    extents: Vector,
+    extents: Vec3,
 }

@@ -1,8 +1,8 @@
-use crate::math::{Point, Vector};
+use crate::math::{Point, Vec3};
 pub struct PlayerState {
     pub position: Point,
-    pub velocity: Vector,
-    pub health: f32,
+    pub move_dir: Vec3,
+    pub max_move_speed: f32,
 }
 
 impl PlayerState {
@@ -13,12 +13,12 @@ impl PlayerState {
                 y: 0.0,
                 z: 0.0,
             },
-            velocity: Vector {
+            move_dir: Vec3 {
                 x: 0.0,
                 y: 0.0,
                 z: 0.0,
             },
-            health: 0.0,
+            max_move_speed: 0.0,
         }
     }
 }

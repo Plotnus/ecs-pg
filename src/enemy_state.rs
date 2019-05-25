@@ -1,4 +1,4 @@
-use crate::math::{Point, Vector};
+use crate::math::{Point, Vec3};
 
 #[repr(u8)]
 #[derive(Copy, Clone)]
@@ -8,7 +8,7 @@ pub enum EnemyVariant {
 #[derive(Copy, Clone)]
 pub struct EnemyState {
     pub position: Point,
-    pub velocity: Vector,
+    pub velocity: Vec3,
     pub health: f32,
     pub variant: EnemyVariant,
 }
@@ -21,7 +21,7 @@ impl EnemyState {
                 y: 0.0,
                 z: 0.0,
             },
-            velocity: Vector {
+            velocity: Vec3 {
                 x: 0.0,
                 y: 0.0,
                 z: 0.0,
