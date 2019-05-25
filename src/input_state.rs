@@ -1,20 +1,5 @@
 use crate::math::Vec2;
-#[derive(Debug)]
-pub struct InputState {
-    // thumb-sticks
-    pub ls: Vec2,
-    pub rs: Vec2,
-    /* ... etc ... */
-}
 
-impl InputState {
-    pub fn new() -> InputState {
-        InputState {
-            ls: Vec2 { x: 0.0, y: 0.0 },
-            rs: Vec2 { x: 0.0, y: 0.0 },
-        }
-    }
-}
 #[derive(Debug)]
 pub struct RawControllerInput {
     pub ls_x: i16,
@@ -84,14 +69,6 @@ pub struct GameControllerInput {
     pub rs: Vec2,
 }
 impl GameControllerInput {
-    /*
-    pub fn new() -> GameControllerInput {
-        GameControllerInput {
-            ls: Vec2::new(0.0, 0.0),
-            rs: Vec2::new(0.0, 0.0),
-        }
-    }
-    */
     pub fn from_core_and_transform<F>(
         core_controller_input: &CoreControllerInput,
         stick_transform: F,

@@ -56,7 +56,7 @@ fn main() -> Result<(), String> {
     let mut game_state = GameState::new();
 
     loop {
-        let game_controller_input = {
+        let input_state = {
             // because we are not using the event loop we must call update on the controller subsystem
             controller_subsystem.update();
             let raw_controller_input = RawControllerInput::from_sdl2_controller(&controller);
@@ -77,10 +77,10 @@ fn main() -> Result<(), String> {
             };
             GameControllerInput::from_core_and_transform(&core_controller_input, axis_transform)
         };
-        println!("input: {:?}", game_controller_input);
+        println!("input: {:?}", input_state);
 
         // modify the game state based on the input
-        //    game_state = input_system(game_state, &input_state);
+        input_system(&mut game_state, &input_state);
 
         // we want physics first because we want the world to be in a valid state before
         // running the entity logic.
@@ -98,28 +98,7 @@ fn main() -> Result<(), String> {
     Ok(())
 }
 
-pub fn update_raw_input(raw_input: &mut RawControllerInput, sdl_ctx: &sdl2::Sdl) {
-    for event in sdl_ctx.event_pump().unwrap().poll_iter() {
-        if let sdl2::event::Event::ControllerAxisMotion {
-            axis, value: val, ..
-        } = event
-        {
-            match axis {
-                sdl2::controller::Axis::LeftX => raw_input.ls_x = val,
-                sdl2::controller::Axis::LeftY => raw_input.ls_y = val,
-                sdl2::controller::Axis::RightX => raw_input.rs_x = val,
-                sdl2::controller::Axis::RightY => raw_input.rs_y = val,
-                sdl2::controller::Axis::TriggerLeft => (),
-                sdl2::controller::Axis::TriggerRight => (),
-            }
-        }
-    }
-}
-
-pub fn input_system(game_state: GameState, _input_state: &GameControllerInput) -> GameState {
-    // println!("input_system");
-    game_state
-}
+pub fn input_system(game_state: &mut GameState, input_state: &GameControllerInput) {}
 pub fn physics_system(game_state: GameState) -> GameState {
     // println!("physics_system");
     game_state
