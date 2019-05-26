@@ -16,6 +16,7 @@ use input_state::CoreControllerInput;
 use input_state::GameControllerInput;
 use input_state::RawControllerInput;
 use math::Vec2;
+use math::Vec3;
 
 fn main() -> Result<(), String> {
     println!("Hello, world!");
@@ -98,7 +99,11 @@ fn main() -> Result<(), String> {
     Ok(())
 }
 
-pub fn input_system(game_state: &mut GameState, input_state: &GameControllerInput) {}
+pub fn input_system(game_state: &mut GameState, input_state: &GameControllerInput) {
+    game_state.player.velocity =
+        Vec3::from_vec2(&input_state.ls).scaled(game_state.player.max_move_speed);
+    game_state.player.shoot_dir = Vec3::from_vec2(&input_state.rs).normalized();
+}
 pub fn physics_system(game_state: GameState) -> GameState {
     // println!("physics_system");
     game_state
