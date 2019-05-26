@@ -19,7 +19,7 @@ pub struct GameState {
     pub level_tiles: [[Tile; NUM_TILES_WIDE]; NUM_TILES_HIGH],
 
     // Maximum of 8 enemies on screen.
-    pub enemies: [EnemyState; MAX_NUM_ENEMIES],
+    pub enemies: [Option<EnemyState>; MAX_NUM_ENEMIES],
 }
 
 impl GameState {
@@ -28,7 +28,7 @@ impl GameState {
             player: PlayerState::new(),
             projectiles: [None; MAX_NUM_PROJECTILES],
             level_tiles: [[Tile::new(); NUM_TILES_WIDE]; NUM_TILES_HIGH],
-            enemies: [EnemyState::new(); MAX_NUM_ENEMIES],
+            enemies: [None; MAX_NUM_ENEMIES],
         }
     }
 }

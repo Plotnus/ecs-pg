@@ -12,6 +12,14 @@ impl Point {
         Point::new(0.0, 0.0, 0.0)
     }
 }
+
+impl std::ops::AddAssign<Vec3> for Point {
+    fn add_assign(&mut self, other: Vec3) {
+        self.x += other.x;
+        self.y += other.y;
+        self.z += other.z;
+    }
+}
 #[derive(Copy, Clone)]
 pub struct Vec3 {
     pub x: f32,

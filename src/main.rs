@@ -1,4 +1,5 @@
 #![feature(clamp)]
+#![feature(duration_float)]
 extern crate sdl2;
 
 mod enemy_state;
@@ -54,6 +55,7 @@ fn main() -> Result<(), String> {
         })
         .expect("Couldn't open any controller");
 
+    let timer = sdl_context.timer()?;
     let mut game_state = GameState::new();
 
     loop {
@@ -86,7 +88,7 @@ fn main() -> Result<(), String> {
         // we want physics first because we want the world to be in a valid state before
         // running the entity logic.
         // Example: a homing missle goes through a wall
-        game_state = physics_system(game_state);
+        physics_system(&mut game_state);
         game_state = entity_logic_system(game_state);
 
         render_system(&game_state);
@@ -104,9 +106,25 @@ pub fn input_system(game_state: &mut GameState, input_state: &GameControllerInpu
         Vec3::from_vec2(&input_state.ls).scaled(game_state.player.max_move_speed);
     game_state.player.shoot_dir = Vec3::from_vec2(&input_state.rs).normalized();
 }
-pub fn physics_system(game_state: GameState) -> GameState {
-    // println!("physics_system");
-    game_state
+pub fn physics_system(game_state: &mut GameState) {
+    let dt = std::time::Duration::from_millis(16);
+
+    // update player
+    game_state.player.position += game_state.player.velocity.scaled(dt.as_secs_f32());
+
+    // update projectiles
+    for p in &mut game_state.projectiles {
+        if let Some(p) = p {
+            p.position += p.velocity.scaled(dt.as_secs_f32());
+        }
+    }
+
+    // update enemies
+    for enemy in &mut game_state.enemies {
+        if let Some(enemy) = enemy {
+            enemy.position += enemy.velocity.scaled(dt.as_secs_f32());
+        }
+    }
 }
 pub fn entity_logic_system(game_state: GameState) -> GameState {
     // println!("entity_logic_system");
