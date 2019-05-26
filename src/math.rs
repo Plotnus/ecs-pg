@@ -26,6 +26,14 @@ impl Vec3 {
         Vec3::new(0.0, 0.0, 0.0)
     }
 
+    pub fn from_vec2(v: &Vec2) -> Vec3 {
+        Vec3 {
+            x: v.x,
+            y: v.y,
+            z: 0.0,
+        }
+    }
+
     /// unit vector in the direction of the x-axis
     pub fn i_hat() -> Vec3 {
         Vec3::new(1.0, 0.0, 0.0)
@@ -37,6 +45,18 @@ impl Vec3 {
     /// unit vector in the direction of the z-axis
     pub fn k_hat() -> Vec3 {
         Vec3::new(0.0, 0.0, 1.0)
+    }
+    pub fn scale(&mut self, s: f32) {
+        self.x *= s;
+        self.y *= s;
+        self.z *= s;
+    }
+    pub fn scaled(&self, s: f32) -> Vec3 {
+        Vec3 {
+            x: self.x * s,
+            y: self.y * s,
+            z: self.z * s,
+        }
     }
 }
 
